@@ -8,5 +8,11 @@ Summary
 
 * utilizing splunk for investigation
 
+* Searched and determined that activity by `asmith` shows spikes in after hours activity
+-- search 01
+earliest=9/18/2026:00:00:00 latest=9/25/2026:17:30:00 index="p3*" "asmith"
+| sort +_time
+-- search 01
 
+* 
 
