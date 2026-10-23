@@ -61,6 +61,19 @@ earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hos
 * Identify all users that clicked on phishing link through http logs. While not indicative of credential submission or significant interaction, users should reset their passwords out of any abundance of caution, as well as attend security seminar.
 
 * Investigation of individual HTTP history for each user that directly interacted with the phishing page by utilizing the login page users and lookup as a subsearch to the overall http traffic. Search 07
+-- search 06
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=GET "http.url"="/login"
+| lookup p3_inventory IP as src_ip 
+| stats count by Employee
+-- search 06
+-- search 07
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" 
+| lookup p3_inventory IP as src_ip 
+| search [ search earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=POST "http.url"="/login"
+| lookup p3_inventory IP as src_ip | table Employee]
+| table _time Employee "http.hostname" "http.url" "http.http_method" dest_ip dest_port "http.http_user_agent"
+| sort +_time
+-- search 07
 
 * Should provide courtesy notification to myers that their site was being used to host a phishing portal
 
