@@ -14,5 +14,4 @@ earliest=9/18/2026:00:00:00 latest=9/25/2026:17:30:00 index="p3*" "asmith"
 | sort +_time
 -- search 01
 
-* 
-
+* Identified spike of logs on Friday the 25th
