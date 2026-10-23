@@ -37,3 +37,9 @@ earliest=9/25/2026:00:00:00 latest=9/26/2026:00:00:00 index="p3*" "asmith"
 -- Raw Log Search
 earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" | eval hash=md5(_raw) | search hash="e5250de76b683d155f1f3d8d3327e021"
 
+* Pivot to identify users that may have submitted credentials to the phishing page, identified by a post request to the myers[.]com login page Search 05
+** Abigail Smith, Brenda Rivas, Jennifer Estrada, Jessica Clark
+** Logging evidence suggest Abigail Smith was the only account to be utilized for spam out, but would recommend all four undergo password reset and security evaluation
+
+
+
