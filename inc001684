@@ -88,4 +88,4 @@ Summary of Actions Taken:
 1. Responded to incident via SNOW about possible compromised email sending out spam
 2. confirmed asmith was sending out spam; password reset
 3. ticket sent to email team to being removing spam messages
-4. ticket sent to firewall team to 
+4. ticket sent to firewall team to block `myers[.]com` page for 30 days 
