@@ -24,3 +24,7 @@ earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" "asmith"
 | eval emailOP=if(isnull(to),"outbound","inbound")
 | timechart span=1m count by emailOP
 -- search 02
+
+* confirmed email with search 03
+-- search 03
+
