@@ -93,4 +93,8 @@ Summary of Actions Taken:
 5a. 3 additional accounts reset as part of POST findings in logs, indicating submission to phishing page (validity unknown)
 6. identification of all users that clicked on the phishing link; recommendations push to lead on action; recommended additional security training
 7. investigation log throughout
+8. information appended to SNOW ticket
+9. closure of cases
+**
 
+// End Investigation Log
