@@ -1,0 +1,100 @@
+## Investigation Opened with Service Now (SNOW)
+
+Summary
+2026/09/05 - Investigation Opened with SERVICE NOW: Incident INC001684
+2026/09/30 - Investigation Closed
+
+* User Barbara Rogers (brogers) reports email from Abigail Smith (asmith) may have had their account compromised. Email from the northamericanlumbercoalition with a body paylog of `click here for a new message`, directing the recipient to an unsecured `myers[.]com` login page 
+
+* utilizing splunk for investigation
+
+* Searched and determined that activity by `asmith` shows spikes in after hours activity
+-- search 01
+earliest=9/18/2026:00:00:00 latest=9/25/2026:17:30:00 index="p3*" "asmith"
+| sort +_time
+-- search 01
+
+* Identified spike of logs on Friday the 25th
+-- image 01
+
+* looking into spik, utilized evaluation of email operation to identify large amounts of outbound email from `asmith@northamericanlumbercoalition.com`, activity indicative of a compromised account 
+-- image 02
+-- search 02
+earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" "asmith"
+| eval emailOP=if(isnull(to),"outbound","inbound")
+| timechart span=1m count by emailOP
+-- search 02
+
+* confirmed email with search 03
+-- search 03
+earliest=9/25/2026:00:00:00 latest=9/26/2026:00:00:00 index="p3*" "asmith"
+| stats count by from
+-- search 03
+
+* Searched through HTTP logs to determine if Abigail accessed the myers.com login page as a precursor to compromise. Search 04
+** Confirmed, POST on 2026/09/25/11:13:36
+** Raw log e5250de76b683d155f1f3d8d3327e021
+-- Raw Log Search Example
+earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" | eval hash=md5(_raw) | search hash="e5250de76b683d155f1f3d8d3327e021"
+-- Raw Log Search Example
+-- Search 04
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" 
+| lookup p3_inventory IP as src_ip
+| search Employee="Abigail Smith"
+| sort +_time
+| eval hash=md5(_raw)
+| table _time hash _raw
+-- Search 04
+
+* Pivot to identify users that may have submitted credentials to the phishing page, identified by a post request to the myers[.]com login page Search 05
+** Abigail Smith, Brenda Rivas, Jennifer Estrada, Jessica Clark
+** Logging evidence suggest Abigail Smith was the only account to be utilized for spam out, but would recommend all four undergo password reset and security evaluation
+-- search 05
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=POST "http.url"="/login"
+| lookup p3_inventory IP as src_ip 
+| stats count by Employee
+-- search 05
+
+
+* image 04 added to investigation record
+
+* Identify all users that clicked on phishing link through http logs. While not indicative of credential submission or significant interaction, users should reset their passwords out of any abundance of caution, as well as attend security seminar.
+
+* Investigation of individual HTTP history for each user that directly interacted with the phishing page by utilizing the login page users and lookup as a subsearch to the overall http traffic. Search 07
+-- search 06
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=GET "http.url"="/login"
+| lookup p3_inventory IP as src_ip 
+| stats count by Employee
+-- search 06
+-- search 07
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" 
+| lookup p3_inventory IP as src_ip 
+| search [ search earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=POST "http.url"="/login"
+| lookup p3_inventory IP as src_ip | table Employee]
+| table _time Employee "http.hostname" "http.url" "http.http_method" dest_ip dest_port "http.http_user_agent"
+| sort +_time
+-- search 07
+
+* Should provide courtesy notification to myers that their site was being used to host a phishing portal
+
+* Logs do not include original email that was sent to Abigail to determine origin compromised domain for notification/block listing.
+
+
+** All findings copied to SNOW log
+
+
+** 
+Summary of Actions Taken:
+1. Responded to incident via SNOW about possible compromised email sending out spam
+2. confirmed asmith was sending out spam; password reset
+3. ticket sent to email team to being removing spam messages
+4. ticket sent to firewall team to block `myers[.]com` page for 30 days 
+5. follow up investigation into additional phishin page interaction
+5a. 3 additional accounts reset as part of POST findings in logs, indicating submission to phishing page (validity unknown)
+6. identification of all users that clicked on the phishing link; recommendations push to lead on action; recommended additional security training
+7. investigation log throughout
+8. information appended to SNOW ticket
+9. closure of cases
+**
+
+// End Investigation Log
