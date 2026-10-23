@@ -49,6 +49,12 @@ earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http"
 * Pivot to identify users that may have submitted credentials to the phishing page, identified by a post request to the myers[.]com login page Search 05
 ** Abigail Smith, Brenda Rivas, Jennifer Estrada, Jessica Clark
 ** Logging evidence suggest Abigail Smith was the only account to be utilized for spam out, but would recommend all four undergo password reset and security evaluation
+-- search 05
+earliest=9/20/2026:00:00:00 latest=09/26/2026:00:00:00 index="p3-http" "http.hostname"="myers.com" "http.http_method"=POST "http.url"="/login"
+| lookup p3_inventory IP as src_ip 
+| stats count by Employee
+-- search 05
+
 
 * image 04 added to investigation record
 
