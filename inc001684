@@ -31,4 +31,9 @@ earliest=9/25/2026:00:00:00 latest=9/26/2026:00:00:00 index="p3*" "asmith"
 | stats count by from
 -- search 03
 
+* Searched through HTTP logs to determine if Abigail accessed the myers.com login page as a precursor to compromise. Search 04
+** Confirmed, POST on 2026/09/25/11:13:36
+** Raw log e5250de76b683d155f1f3d8d3327e021
+-- Raw Log Search
+earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" | eval hash=md5(_raw) | search hash="e5250de76b683d155f1f3d8d3327e021"
 
