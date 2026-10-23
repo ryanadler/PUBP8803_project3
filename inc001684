@@ -27,4 +27,8 @@ earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" "asmith"
 
 * confirmed email with search 03
 -- search 03
+earliest=9/25/2026:00:00:00 latest=9/26/2026:00:00:00 index="p3*" "asmith"
+| stats count by from
+-- search 03
+
 
