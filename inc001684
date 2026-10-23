@@ -19,3 +19,8 @@ earliest=9/18/2026:00:00:00 latest=9/25/2026:17:30:00 index="p3*" "asmith"
 
 * looking into spik, utilized evaluation of email operation to identify large amounts of outbound email from `asmith@northamericanlumbercoalition.com`, activity indicative of a compromised account 
 -- image 02
+-- search 02
+earliest=9/25/2026:00:00:00 latest=9/26/2026:18:00:00 index="p3*" "asmith"
+| eval emailOP=if(isnull(to),"outbound","inbound")
+| timechart span=1m count by emailOP
+-- search 02
